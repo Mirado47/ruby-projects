@@ -26,7 +26,7 @@ class Game
   
   def check_match(pguess)
   	@match = []
-  	puts "valid"
+  	
    
   	@ccode.each do |x| 
   		if @pguess.include?(x) 
