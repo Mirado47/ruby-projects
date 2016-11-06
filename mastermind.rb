@@ -9,7 +9,7 @@ class Game
   
   def start
   	puts "I'm thinkin of 4 numbers each between 1 and 6 without duplicates. \n     What are they? \n Separate by commas please."
-  	puts @ccode
+  	
   	get_valid_guess
   end
   
@@ -76,7 +76,9 @@ class Game
   	    end
       end 
       puts "\nThere are #{count.count} numbers in the right place...."
-  	    sleep 3
+  	    sleep 1
+  	    puts "\n ..................."
+  	    sleep 2
   	    puts "\nIm so happy for you..."
     end
    skipstart
