@@ -1,68 +1,90 @@
 class Game
+	
 	def initialize
-		@playercode 
-		@comcode = (1..6).to_a.shuffle.pop(4)
-		@playerguess
-		@comguess
+    @pcode 
+		@ccode = (1..6).to_a.shuffle.pop(4)
+		@pguess
+		@cguess
   end
   
   def start
-  	puts "Im thinking of a code of four numbers each between 1 and 6, what are they? separate by commas."
-  	@playerguess = gets.chomp!
-  	validate_guess
+  	puts "I'm thinkin of 4 numbers each between 1 and 6 without duplicates. \n     What are they? \n Separate by commas please."
+  	puts @ccode
+  	get_valid_guess
   end
   
-  def playguess
-  	@corrects = corrects
-  	if @corrects.count > 1
-  	puts "you have #{corrects} numbers correct! what is your next guess?"
-  	@playerguess = gets.chomp!
-    end
-  	validate_guess
-  end
-  
-  def validate_guess
-  	@playerguess = @playerguess.split(',').map! { |x| x.to_i }
-  	if @playerguess.all? { |x| x.between?(1,6) }
-  		check_guess(@playerguess)
+  def get_valid_guess
+  	@pguess = gets.chomp!
+  	@pguess = @pguess.split(',').map! { |x| x.to_i }
+  	if @pguess.all? { |x| x.between?(1,6) }
+  		check_match(@pguess)
   	else
   		puts "Gimmie a better string dude or dudette..."
-  		playguess
+  		get_valid_guess
   	end
   end
   
-  def check_guess(guess)
-  	guess = @playerguess
-  	code = @comcode
+  def check_match(pguess)
   	@match = []
-  	code.each do |x| 
-  		if guess.include?(x) 
-  		@match << x
+  	puts "valid"
+   
+  	@ccode.each do |x| 
+  		if @pguess.include?(x) 
+  		@match << x 
   	  end
-  	end
-  	if @match.count > 0
-  		position_check
-  		puts @comcode.join
-  		
-  	else
-  		
-  	playguess
     end
+    check_correct(@pguess,@match)
   end
   
-  def position_check
+  def check_correct(pguess,pmatch)
   	i = 0
-  	@corrects = []
-  	4.times do	
-  		if @playerguess[i] == @comcode[i]
-  			 @corrects << @comcode[i]
+  	@match = pmatch
+  	@correct = Array.new(@ccode.count,"")
+  	4.times do
+  		if @pguess[i] == @ccode[i]
+  			@correct[i] = @ccode[i]
   		end
   		i += 1
   	end
-  	playguess
-  	puts @comcode.join
-  	puts @corrects.count
-  	puts @corrects.join
+  	wincon(@correct)
+  end	
+  
+  def wincon(correct)
+  	if correct == @ccode
+  	  endgame
+    else
+    	feedback
+  	end	
   end
+  
+  def endgame
+  	puts "            !!!!!!!!!!!!!!!!!! \nYou have guessed my secret code. \n       Im melting or whatever..."
+  end
+  
+  def feedback
+  	count = []
+    if @match.count > 0
+    puts "There are #{@match.count} numbers you guessed in my code. \nKeep guessing I guess. \nNot that I want you to win or anything."
+    end
+    if @correct.all? { |a| a.is_a? String }
+  	puts "\nNo numbers are in the right place. \n \nI bet you're real good at other things though. 
+  	\nLike you always use your turn signal or something."
+    else
+  	  @correct.each do |x|
+  		  if x.is_a? Integer
+  		  count << x	
+  	    end
+      end 
+      puts "\nThere are #{count.count} numbers in the right place...."
+  	    sleep 3
+  	    puts "\nIm so happy for you..."
+    end
+   skipstart
+  end
+  def skipstart
+   	puts "\nGive me your next guess if you feel like wasting your time. \nMy code is unbreakable."
+   	get_valid_guess
+   end
 end
 Game.new.start
+ 
